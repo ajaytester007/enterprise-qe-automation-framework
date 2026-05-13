@@ -1,4 +1,5 @@
 name: QE Framework CI
+
 on:
   push:
   pull_request:
@@ -7,20 +8,25 @@ on:
 jobs:
   smoke-and-api-db:
     runs-on: ubuntu-latest
+
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-java@v4
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Java 17
+        uses: actions/setup-java@v4
         with:
           distribution: temurin
           java-version: '17'
           cache: maven
-      - name: Run smoke gate
-        run: mvn clean test -Psmoke -Dheadless=true
-      - name: Run API and DB checks
-        run: mvn test -Papi-db -Dheadless=true
+
+      - name: Run enterprise QE validation suite
+        run: mvn clean test -DsuiteXmlFile=testng-parallel.xml -Dheadless=true
+
       - name: Publish surefire evidence
         uses: actions/upload-artifact@v4
         if: always()
         with:
           name: surefire-reports
           path: target/surefire-reports
+          if-no-files-found: warn
