@@ -1,0 +1,8 @@
+<!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd">
+<suite name="Parallel QE Suite" parallel="none" thread-count="1">
+    <test name="UI API DB Regression">
+        <classes>
+            <class name="com.hashtagash.pnc.framework.tests.FrameworkOwnershipTest"/>
+        </classes>
+    </test>
+</suite>
